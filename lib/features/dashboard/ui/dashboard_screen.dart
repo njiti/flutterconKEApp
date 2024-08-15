@@ -19,34 +19,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
   PageController pageController = PageController();
   int selectedPageIndex = 0;
 
-  final List<PageItem> pages = [];
+  final List<PageItem> pages = [
+    const PageItem(title: 'Home', icon: 'home', screen: HomeScreen()),
+    const PageItem(title: 'Feed', icon: 'bell', screen: FeedScreen()),
+    const PageItem(title: 'Sessions', icon: 'time', screen: SessionsScreen()),
+    const PageItem(title: 'About', icon: 'flower', screen: AboutScreen()),
+  ];
 
   @override
   void initState() {
     super.initState();
     selectedPageIndex = pageController.initialPage;
-    pages.addAll([
-      PageItem(
-        title: 'Home',
-        icon: 'home',
-        screen: HomeScreen(
-          switchTab: () {
-            switchTab(2);
-          },
-        ),
-      ),
-      const PageItem(title: 'Feed', icon: 'bell', screen: FeedScreen()),
-      const PageItem(title: 'Sessions', icon: 'time', screen: SessionsScreen()),
-      const PageItem(title: 'About', icon: 'flower', screen: AboutScreen()),
-    ]);
   }
-
-  void switchTab(int index) => setState(() {
-        setState(() {
-          selectedPageIndex = index;
-          pageController.jumpToPage(index);
-        });
-      });
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: PageView(
         controller: pageController,
-        onPageChanged: switchTab,
+        onPageChanged: (index) => setState(() => selectedPageIndex = index),
         physics: const NeverScrollableScrollPhysics(),
         children: pages.map<Widget>((item) => item.screen).toList(),
       ),

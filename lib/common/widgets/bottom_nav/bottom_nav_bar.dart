@@ -79,6 +79,9 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkTheme = theme.brightness == Brightness.light;
+
     return GestureDetector(
       onHorizontalDragStart: _handleDragStart,
       onHorizontalDragUpdate: _handleDragUpdate,
@@ -89,10 +92,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           : null,
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
+        backgroundColor: isDarkTheme ? Colors.black : Colors.white,
         currentIndex: widget.selectedIndex,
         selectedItemColor: ThemeColors.orangeDroidconColor,
-        unselectedItemColor: ThemeColors.greyDarkThemeBackground,
+        unselectedItemColor: isDarkTheme
+            ? ThemeColors.greyTextColor
+            : ThemeColors.greyDarkThemeBackground,
         unselectedLabelStyle: const TextStyle(fontSize: 12),
         selectedLabelStyle: const TextStyle(fontSize: 12),
         onTap: widget.onPageChange,
@@ -105,8 +110,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               child: AppNavIcon(
                 page.icon,
                 color: isActive
-                    ? ThemeColors.blueDroidconColor
-                    : ThemeColors.greyTextColor,
+                    ? isDarkTheme
+                        ? ThemeColors.blueGreenDroidconColor
+                        : ThemeColors.blueDroidconColor
+                    : isDarkTheme
+                        ? ThemeColors.lightGreyTextColor
+                        : ThemeColors.greyTextColor,
               ),
             ),
           );
